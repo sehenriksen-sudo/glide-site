@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — Glide GLP-1 Tracker</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue:   #007AFF;
+      --indigo: #5856D6;
+      --text:   #1c1c1e;
+      --muted:  #6e6e73;
+      --bg:     #f2f2f7;
+      --card:   #ffffff;
+      --border: #e5e5ea;
+      --radius: 14px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --text:   #f2f2f7;
+        --muted:  #98989d;
+        --bg:     #000000;
+        --card:   #1c1c1e;
+        --border: #38383a;
+      }
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Header ── */
+    header {
+      background: linear-gradient(135deg, var(--blue) 0%, var(--indigo) 100%);
+      color: #fff;
+      padding: 56px 24px 48px;
+      text-align: center;
+    }
+    .app-icon {
+      width: 80px; height: 80px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.2);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 38px;
+      margin-bottom: 20px;
+      backdrop-filter: blur(10px);
+    }
+    header h1 {
+      font-size: clamp(24px, 5vw, 34px);
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+    header p {
+      margin-top: 8px;
+      font-size: 15px;
+      opacity: 0.85;
+    }
+
+    /* ── Layout ── */
+    main {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 40px 20px 80px;
+    }
+
+    /* ── Summary cards ── */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin-bottom: 40px;
+    }
+    .summary-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 18px 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .summary-card .icon {
+      font-size: 26px;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+    .summary-card strong {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 3px;
+    }
+    .summary-card span {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* ── Sections ── */
+    section {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 28px 24px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    section h2 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    section h2 .num {
+      display: inline-flex;
+      align-items: center; justify-content: center;
+      width: 26px; height: 26px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--blue), var(--indigo));
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      margin-right: 10px;
+      vertical-align: middle;
+    }
+    p { margin-bottom: 12px; font-size: 15px; }
+    p:last-child { margin-bottom: 0; }
+    ul, ol { padding-left: 20px; margin-bottom: 12px; }
+    li { font-size: 15px; margin-bottom: 6px; }
+
+    /* ── Tables ── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      margin: 12px 0;
+    }
+    th {
+      text-align: left;
+      padding: 10px 12px;
+      background: var(--bg);
+      font-weight: 600;
+      font-size: 13px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+    td {
+      padding: 10px 12px;
+      border-top: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    /* ── Callout ── */
+    .callout {
+      background: rgba(0, 122, 255, 0.08);
+      border-left: 3px solid var(--blue);
+      border-radius: 0 10px 10px 0;
+      padding: 14px 16px;
+      font-size: 14px;
+      margin: 14px 0;
+    }
+    .callout strong { color: var(--blue); }
+
+    a { color: var(--blue); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 32px 20px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    footer a { color: var(--muted); }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="app-icon">💊</div>
+  <h1>Privacy Policy</h1>
+  <p>Glide — GLP-1 Tracker &nbsp;·&nbsp; Last updated October 27, 2026</p>
+</header>
+
+<main>
+
+  <!-- Summary cards -->
+  <div class="summary-grid">
+    <div class="summary-card">
+      <div class="icon">📱</div>
+      <div>
+        <strong>Health data stays on device</strong>
+        <span>Never uploaded to our servers</span>
+      </div>
+    </div>
+    <div class="summary-card">
+      <div class="icon">🎭</div>
+      <div>
+        <strong>Community is anonymous</strong>
+        <span>No name or email required</span>
+      </div>
+    </div>
+    <div class="summary-card">
+      <div class="icon">🚫</div>
+      <div>
+        <strong>We never sell your data</strong>
+        <span>Ever. To anyone.</span>
+      </div>
+    </div>
+    <div class="summary-card">
+      <div class="icon">🗑️</div>
+      <div>
+        <strong>Delete anytime</strong>
+        <span>Delete the app to erase everything</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 1 -->
+  <section>
+    <h2><span class="num">1</span>Data stored on your device</h2>
+    <p>The following data is created and stored exclusively on your iPhone using Apple's SwiftData framework. It never leaves your device unless you explicitly export it via the CSV export feature.</p>
+    <table>
+      <thead><tr><th>Data type</th><th>What it contains</th></tr></thead>
+      <tbody>
+        <tr><td>Medication logs</td><td>Injection date, dose, medication type</td></tr>
+        <tr><td>Weight logs</td><td>Date and weight measurement</td></tr>
+        <tr><td>Food logs</td><td>Meal name, calories, macronutrients</td></tr>
+        <tr><td>Exercise logs</td><td>Workout type, duration, calories, distance</td></tr>
+        <tr><td>User configuration</td><td>Medication preference, goal weight, cost settings</td></tr>
+        <tr><td>Community profile</td><td>Display name, bio, profile photo, GLP-1 start date</td></tr>
+      </tbody>
+    </table>
+    <p>This data is protected by your device's standard security (Face ID / passcode encryption).</p>
+  </section>
+
+  <!-- 2 -->
+  <section>
+    <h2><span class="num">2</span>Apple HealthKit</h2>
+    <p>Glide can read workout data from Apple Health with your explicit permission. We use this data solely to populate the exercise log inside the app.</p>
+    <div class="callout">
+      <strong>Apple requirement:</strong> HealthKit data is never used for advertising, never sold to third parties, and never used for any purpose other than providing exercise tracking features within Glide.
+    </div>
+    <p>You can revoke HealthKit access at any time in <strong>Settings → Privacy &amp; Security → Health → Glide</strong>.</p>
+  </section>
+
+  <!-- 3 -->
+  <section>
+    <h2><span class="num">3</span>Community chat (optional, anonymous)</h2>
+    <p>The community chat feature is opt-in and anonymous. If you use it:</p>
+    <ul>
+      <li><strong>Firebase Anonymous Authentication</strong> — assigns you a randomly generated anonymous ID with no connection to your name, email, Apple ID, or any other identifier.</li>
+      <li><strong>Firebase Firestore</strong> — stores your community profile (display name, bio, GLP-1 type, weeks on journey, optional photo) visible to other users while you are active.</li>
+      <li><strong>Firebase Storage</strong> — stores your profile photo, linked only to your anonymous ID.</li>
+      <li><strong>Chat messages</strong> — stored for the duration of an active session only. When either participant disconnects, the session is marked inactive and messages are not retained.</li>
+    </ul>
+    <p>No email address, phone number, Apple ID, real name, location, or device identifier is associated with your community profile. See <a href="https://policies.google.com/privacy" target="_blank">Google's Privacy Policy</a> for Firebase infrastructure details.</p>
+  </section>
+
+  <!-- 4 -->
+  <section>
+    <h2><span class="num">4</span>Subscriptions (RevenueCat)</h2>
+    <p>Glide uses RevenueCat to manage Premium subscriptions. When you make a purchase, RevenueCat processes the transaction through Apple's App Store. RevenueCat may collect purchase history, subscription status, and a device-level anonymous identifier. They do not receive your name, email, or payment details — those remain with Apple.</p>
+    <p>See <a href="https://www.revenuecat.com/privacy" target="_blank">RevenueCat's Privacy Policy</a> for details.</p>
+  </section>
+
+  <!-- 5 -->
+  <section>
+    <h2><span class="num">5</span>Crash reporting &amp; analytics</h2>
+    <p>Glide does not include any third-party analytics SDK. We do not track in-app behaviour, screen views, or usage patterns.</p>
+    <p>Apple may collect anonymised crash reports through the App Store if you have opted in to "Share with App Developers" in your iPhone settings. We use these solely to fix bugs.</p>
+  </section>
+
+  <!-- 6 -->
+  <section>
+    <h2><span class="num">6</span>Data sharing</h2>
+    <p>We do not sell, rent, or share your personal data with third parties except:</p>
+    <ul>
+      <li><strong>Apple</strong> — to process App Store purchases and deliver the app.</li>
+      <li><strong>Google Firebase</strong> — only for anonymous community chat sessions (section 3).</li>
+      <li><strong>RevenueCat</strong> — only for subscription management (section 4).</li>
+      <li><strong>Legal requirements</strong> — if required by law, court order, or governmental authority.</li>
+    </ul>
+  </section>
+
+  <!-- 7 -->
+  <section>
+    <h2><span class="num">7</span>Children's privacy</h2>
+    <p>Glide is rated 12+ on the App Store. We do not knowingly collect data from children under 13. If you believe a child under 13 has used the community features, contact us and we will remove their data promptly.</p>
+  </section>
+
+  <!-- 8 -->
+  <section>
+    <h2><span class="num">8</span>Your rights</h2>
+    <ul>
+      <li><strong>Delete your data</strong> — delete the app to erase all on-device data. To delete your anonymous Firebase community profile, use the in-app profile settings or contact us.</li>
+      <li><strong>Export your data</strong> — use Settings → Export Data in the app to download a CSV of all your logs.</li>
+      <li><strong>GDPR (European users)</strong> — you have the right to access, correct, port, and erase your personal data, and to object to or restrict its processing.</li>
+      <li><strong>CCPA (California users)</strong> — we do not sell personal information. California residents may request disclosure of data categories collected.</li>
+    </ul>
+  </section>
+
+  <!-- 9 -->
+  <section>
+    <h2><span class="num">9</span>Data retention</h2>
+    <table>
+      <thead><tr><th>Data</th><th>Retention</th></tr></thead>
+      <tbody>
+        <tr><td>On-device health logs</td><td>Until you delete the app or the data manually</td></tr>
+        <tr><td>Community profile (Firebase)</td><td>Until you delete it in-app or contact us</td></tr>
+        <tr><td>Chat messages (Firebase)</td><td>Session only — deleted on disconnect</td></tr>
+        <tr><td>Anonymous Firebase auth ID</td><td>Until you contact us requesting deletion</td></tr>
+        <tr><td>RevenueCat purchase records</td><td>Per RevenueCat's retention policy</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 10 -->
+  <section>
+    <h2><span class="num">10</span>Changes to this policy</h2>
+    <p>We may update this policy from time to time. When we do, we will update the "Last updated" date at the top of this page. For material changes, we will notify you via an in-app notice.</p>
+  </section>
+
+  <!-- 11 -->
+  <section>
+    <h2><span class="num">11</span>Contact</h2>
+    <p>Questions or requests regarding your privacy:</p>
+    <p>
+      📧 <a href="mailto:privacy@glideapp.io">privacy@glideapp.io</a>
+    </p>
+    <p style="margin-top:16px; font-size:13px; color:var(--muted);">
+      Glide is an informational tool and is not a medical device. It is not intended to diagnose, treat, cure, or prevent any disease. Always follow your prescriber's guidance.
+    </p>
+  </section>
+
+</main>
+
+<footer>
+  <p>© 2026 Glide GLP-1 Tracker &nbsp;·&nbsp; <a href="privacy.html">Privacy Policy</a></p>
+</footer>
+
+</body>
+</html>
