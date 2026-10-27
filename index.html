@@ -3,10 +3,774 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="refresh" content="0; url=privacy.html" />
-  <title>Glide — GLP-1 Tracker</title>
+  <title>Glide — GLP-1 Tracker for iPhone</title>
+  <meta name="description" content="Track your Ozempic, Wegovy, Mounjaro, or Zepbound journey. Real-time concentration curves, food noise alerts, and anonymous peer support." />
+  <meta property="og:title" content="Glide — GLP-1 Tracker" />
+  <meta property="og:description" content="Know exactly where you are in your dose. Predict the food noise. Connect anonymously with others on the same journey." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://sehenriksen-sudo.github.io/glide-site/" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue:     #007AFF;
+      --indigo:   #5856D6;
+      --teal:     #32ADE6;
+      --green:    #34C759;
+      --orange:   #FF9500;
+      --text:     #1c1c1e;
+      --muted:    #6e6e73;
+      --bg:       #ffffff;
+      --bg2:      #f2f2f7;
+      --card:     #ffffff;
+      --border:   #e5e5ea;
+      --radius:   18px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --text:   #f2f2f7;
+        --muted:  #98989d;
+        --bg:     #000000;
+        --bg2:    #1c1c1e;
+        --card:   #2c2c2e;
+        --border: #38383a;
+      }
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ── NAV ──────────────────────────────────────────────── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 32px;
+      height: 58px;
+      background: rgba(255,255,255,0.72);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    @media (prefers-color-scheme: dark) {
+      nav { background: rgba(0,0,0,0.72); }
+    }
+    .nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 17px; }
+    .nav-logo .dot {
+      width: 32px; height: 32px; border-radius: 8px;
+      background: linear-gradient(135deg, var(--blue), var(--indigo));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+    }
+    nav a.cta-pill {
+      background: var(--blue);
+      color: #fff;
+      padding: 7px 18px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    /* ── HERO ─────────────────────────────────────────────── */
+    .hero {
+      min-height: 92vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 80px 24px 60px;
+      background: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(0,122,255,0.12) 0%, transparent 70%);
+      position: relative;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(0,122,255,0.1);
+      border: 1px solid rgba(0,122,255,0.2);
+      color: var(--blue);
+      padding: 5px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 28px;
+      letter-spacing: 0.2px;
+    }
+    .hero h1 {
+      font-size: clamp(40px, 8vw, 76px);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -2px;
+      max-width: 780px;
+      margin-bottom: 24px;
+    }
+    .hero h1 .grad {
+      background: linear-gradient(135deg, var(--blue) 0%, var(--indigo) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero p {
+      font-size: clamp(16px, 2.5vw, 21px);
+      color: var(--muted);
+      max-width: 540px;
+      line-height: 1.55;
+      margin-bottom: 40px;
+    }
+    .hero-actions {
+      display: flex; gap: 14px; flex-wrap: wrap; justify-content: center;
+      margin-bottom: 64px;
+    }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: linear-gradient(135deg, var(--blue), var(--indigo));
+      color: #fff;
+      padding: 14px 28px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 700;
+      box-shadow: 0 8px 24px rgba(0,122,255,0.35);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(0,122,255,0.4); }
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--bg2);
+      color: var(--text);
+      padding: 14px 28px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    /* Phone mockup */
+    .phone-wrap {
+      position: relative;
+      display: inline-block;
+    }
+    .phone {
+      width: min(280px, 72vw);
+      aspect-ratio: 9/19.5;
+      background: linear-gradient(160deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      border-radius: 44px;
+      border: 8px solid rgba(255,255,255,0.12);
+      box-shadow:
+        0 40px 80px rgba(0,0,0,0.35),
+        0 0 0 1px rgba(255,255,255,0.06),
+        inset 0 0 0 1px rgba(255,255,255,0.04);
+      overflow: hidden;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: flex-start;
+      padding: 28px 16px 16px;
+      position: relative;
+    }
+    /* Notch */
+    .phone::before {
+      content: "";
+      position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+      width: 100px; height: 28px;
+      background: #000;
+      border-radius: 0 0 20px 20px;
+      z-index: 10;
+    }
+    .phone-content {
+      width: 100%;
+      display: flex; flex-direction: column; gap: 8px;
+      margin-top: 12px;
+    }
+    .phone-label {
+      font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.4);
+      text-transform: uppercase; letter-spacing: 0.8px;
+    }
+    .phone-title { font-size: 18px; font-weight: 800; color: #fff; margin-bottom: 4px; }
+    .conc-bar-wrap {
+      background: rgba(255,255,255,0.06);
+      border-radius: 10px; padding: 12px;
+    }
+    .conc-value { font-size: 36px; font-weight: 800; color: #fff; line-height: 1; }
+    .conc-sub { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 3px; }
+    .conc-track {
+      height: 6px; background: rgba(255,255,255,0.1);
+      border-radius: 3px; margin-top: 10px; overflow: hidden;
+    }
+    .conc-fill {
+      height: 100%; width: 72%;
+      background: linear-gradient(90deg, #007AFF, #5856D6);
+      border-radius: 3px;
+    }
+    .mini-cards { display: flex; gap: 6px; }
+    .mini-card {
+      flex: 1; background: rgba(255,255,255,0.06);
+      border-radius: 10px; padding: 8px;
+    }
+    .mini-card .mc-icon { font-size: 16px; margin-bottom: 4px; }
+    .mini-card .mc-val { font-size: 13px; font-weight: 700; color: #fff; }
+    .mini-card .mc-lbl { font-size: 9px; color: rgba(255,255,255,0.4); }
+    .noise-card {
+      background: rgba(255,149,0,0.15);
+      border: 1px solid rgba(255,149,0,0.3);
+      border-radius: 10px; padding: 10px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .noise-card .nc-icon { font-size: 20px; }
+    .noise-card .nc-text { font-size: 11px; font-weight: 600; color: #FF9500; }
+    .noise-card .nc-sub { font-size: 10px; color: rgba(255,255,255,0.4); }
+
+    /* floating pills */
+    .float-pill {
+      position: absolute;
+      background: var(--card);
+      border-radius: 14px;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+      display: flex; align-items: center; gap: 8px;
+      white-space: nowrap;
+      border: 1px solid var(--border);
+    }
+    .float-pill.left  { left: -60px; top: 30%; }
+    .float-pill.right { right: -60px; top: 55%; }
+    @media (max-width: 600px) {
+      .float-pill { display: none; }
+    }
+
+    /* ── LOGOS / SOCIAL PROOF ─────────────────────────────── */
+    .built-with {
+      text-align: center;
+      padding: 32px 24px;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .built-with p {
+      font-size: 12px; font-weight: 600; color: var(--muted);
+      text-transform: uppercase; letter-spacing: 0.8px;
+      margin-bottom: 20px;
+    }
+    .tech-pills {
+      display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+    }
+    .tech-pill {
+      background: var(--bg2);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+    }
+
+    /* ── FEATURES ─────────────────────────────────────────── */
+    section { padding: 80px 24px; }
+
+    .section-label {
+      font-size: 13px; font-weight: 700; color: var(--blue);
+      text-transform: uppercase; letter-spacing: 1px;
+      margin-bottom: 12px; text-align: center;
+    }
+    .section-title {
+      font-size: clamp(28px, 5vw, 44px);
+      font-weight: 800; letter-spacing: -1px;
+      text-align: center; max-width: 600px;
+      margin: 0 auto 16px;
+    }
+    .section-sub {
+      font-size: 17px; color: var(--muted); text-align: center;
+      max-width: 500px; margin: 0 auto 56px; line-height: 1.55;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .feature-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 24px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .feature-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+    }
+    .feature-icon {
+      width: 48px; height: 48px;
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+      margin-bottom: 16px;
+    }
+    .feature-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
+    .feature-card p  { font-size: 14px; color: var(--muted); line-height: 1.55; }
+
+    /* ── CONCENTRATION EXPLAINER ──────────────────────────── */
+    .explainer {
+      background: var(--bg2);
+    }
+    .explainer-inner {
+      max-width: 960px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
+      align-items: center;
+    }
+    @media (max-width: 700px) {
+      .explainer-inner { grid-template-columns: 1fr; gap: 40px; }
+    }
+    .explainer-text h2 {
+      font-size: clamp(26px, 4vw, 38px);
+      font-weight: 800; letter-spacing: -0.8px;
+      margin-bottom: 16px; line-height: 1.15;
+    }
+    .explainer-text p { font-size: 15px; color: var(--muted); line-height: 1.6; margin-bottom: 12px; }
+    .check-list { list-style: none; }
+    .check-list li {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 15px; margin-bottom: 10px;
+    }
+    .check-list li::before {
+      content: "✓";
+      color: var(--green); font-weight: 800;
+      flex-shrink: 0; margin-top: 1px;
+    }
+    /* curve visual */
+    .curve-card {
+      background: #0a0a1a;
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    }
+    .curve-card-title { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.5); margin-bottom: 4px; }
+    .curve-card-med   { font-size: 18px; font-weight: 800; color: #fff; margin-bottom: 20px; }
+    .svg-wrap { width: 100%; }
+    svg.curve { width: 100%; height: auto; overflow: visible; }
+
+    /* ── COMMUNITY ────────────────────────────────────────── */
+    .community-inner {
+      max-width: 960px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
+      align-items: center;
+    }
+    @media (max-width: 700px) {
+      .community-inner { grid-template-columns: 1fr; gap: 40px; }
+    }
+    .chat-preview {
+      background: var(--bg2);
+      border-radius: 20px;
+      padding: 20px;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .chat-header {
+      display: flex; align-items: center; gap: 10px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--teal), var(--blue));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; color: #fff; font-weight: 700;
+    }
+    .chat-header-text strong { display: block; font-size: 14px; }
+    .chat-header-text span   { font-size: 12px; color: var(--muted); }
+    .bubble {
+      max-width: 75%;
+      padding: 10px 14px;
+      border-radius: 18px;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+    .bubble.them {
+      background: var(--card);
+      border: 1px solid var(--border);
+      align-self: flex-start;
+      border-bottom-left-radius: 4px;
+    }
+    .bubble.me {
+      background: linear-gradient(135deg, var(--blue), var(--indigo));
+      color: #fff;
+      align-self: flex-end;
+      border-bottom-right-radius: 4px;
+    }
+    .bubble-time { font-size: 10px; color: var(--muted); margin-top: 4px; }
+    .bubble-time.right { text-align: right; }
+    .anon-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(52,199,89,0.12);
+      border: 1px solid rgba(52,199,89,0.25);
+      color: var(--green);
+      padding: 4px 12px; border-radius: 20px;
+      font-size: 12px; font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    /* ── PRIVACY ──────────────────────────────────────────── */
+    .privacy-section { background: var(--bg2); }
+    .privacy-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      max-width: 900px; margin: 0 auto;
+    }
+    .privacy-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px 18px;
+      display: flex; align-items: flex-start; gap: 14px;
+    }
+    .privacy-card .icon { font-size: 28px; flex-shrink: 0; }
+    .privacy-card h3 { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .privacy-card p  { font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+    /* ── CTA ──────────────────────────────────────────────── */
+    .cta-section {
+      text-align: center;
+      background: linear-gradient(135deg, var(--blue) 0%, var(--indigo) 100%);
+      color: #fff;
+    }
+    .cta-section .section-label { color: rgba(255,255,255,0.7); }
+    .cta-section .section-title { color: #fff; }
+    .cta-section .section-sub   { color: rgba(255,255,255,0.75); }
+    .btn-white {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #fff;
+      color: var(--blue);
+      padding: 14px 30px;
+      border-radius: 14px;
+      font-size: 16px; font-weight: 700;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+      transition: transform 0.15s;
+    }
+    .btn-white:hover { transform: translateY(-2px); }
+
+    /* ── FOOTER ───────────────────────────────────────────── */
+    footer {
+      background: var(--bg2);
+      padding: 40px 24px;
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+    .footer-logo { font-size: 20px; font-weight: 800; margin-bottom: 16px; }
+    .footer-links {
+      display: flex; gap: 24px; justify-content: center;
+      flex-wrap: wrap; margin-bottom: 20px;
+    }
+    .footer-links a { font-size: 14px; color: var(--muted); }
+    .footer-links a:hover { color: var(--blue); }
+    footer p { font-size: 13px; color: var(--muted); }
+    .disclaimer {
+      max-width: 560px; margin: 16px auto 0;
+      font-size: 12px; color: var(--muted); line-height: 1.5;
+    }
+  </style>
 </head>
 <body>
-  <p>Redirecting to <a href="privacy.html">Privacy Policy</a>…</p>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <div class="dot">💊</div>
+    Glide
+  </div>
+  <a href="#download" class="cta-pill">Download Free</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">💊 For Ozempic · Wegovy · Mounjaro · Zepbound</div>
+  <h1>Know exactly where you<br>are in <span class="grad">your dose.</span></h1>
+  <p>Glide tracks your GLP-1 concentration in real time, predicts your food noise window, and connects you anonymously with others on the same journey.</p>
+  <div class="hero-actions">
+    <a href="#download" class="btn-primary">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
+      Download on the App Store
+    </a>
+    <a href="privacy.html" class="btn-secondary">Privacy Policy</a>
+  </div>
+
+  <!-- Phone mockup -->
+  <div class="phone-wrap">
+    <div class="float-pill left">📈 72% concentration</div>
+    <div class="float-pill right">⚠️ Food noise in 18h</div>
+    <div class="phone">
+      <div class="phone-content">
+        <div class="phone-label">Medication</div>
+        <div class="phone-title">Ozempic · 1.0 mg</div>
+        <div class="conc-bar-wrap">
+          <div class="conc-value">72%</div>
+          <div class="conc-sub">Active concentration · Day 4</div>
+          <div class="conc-track"><div class="conc-fill"></div></div>
+        </div>
+        <div class="mini-cards">
+          <div class="mini-card">
+            <div class="mc-icon">📅</div>
+            <div class="mc-val">3 days</div>
+            <div class="mc-lbl">Next dose</div>
+          </div>
+          <div class="mini-card">
+            <div class="mc-icon">⚖️</div>
+            <div class="mc-val">−4.2 kg</div>
+            <div class="mc-lbl">Progress</div>
+          </div>
+          <div class="mini-card">
+            <div class="mc-icon">🔥</div>
+            <div class="mc-val">1,840</div>
+            <div class="mc-lbl">kcal today</div>
+          </div>
+        </div>
+        <div class="noise-card">
+          <div class="nc-icon">⚠️</div>
+          <div>
+            <div class="nc-text">Food noise window approaching</div>
+            <div class="nc-sub">Concentration drops below 40% in ~18 hours</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BUILT WITH -->
+<div class="built-with">
+  <p>Built with</p>
+  <div class="tech-pills">
+    <span class="tech-pill">SwiftUI</span>
+    <span class="tech-pill">SwiftData</span>
+    <span class="tech-pill">HealthKit</span>
+    <span class="tech-pill">WidgetKit</span>
+    <span class="tech-pill">ActivityKit</span>
+    <span class="tech-pill">App Intents</span>
+    <span class="tech-pill">Firebase</span>
+    <span class="tech-pill">RevenueCat</span>
+    <span class="tech-pill">CoreSpotlight</span>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="section-label">Everything you need</div>
+  <h2 class="section-title">Your whole GLP-1 journey in one place</h2>
+  <p class="section-sub">From the moment you inject to your next dose, Glide tracks every variable that matters.</p>
+
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon" style="background:rgba(0,122,255,0.1)">📈</div>
+      <h3>Concentration Curves</h3>
+      <p>A real-time pharmacokinetic model plots exactly how much medication is active in your system across the full 7-day cycle.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon" style="background:rgba(255,149,0,0.1)">⚠️</div>
+      <h3>Food Noise Alerts</h3>
+      <p>Glide calculates when your concentration drops below the food noise threshold and warns you before cravings hit.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon" style="background:rgba(52,199,89,0.1)">⚖️</div>
+      <h3>Weight Tracking</h3>
+      <p>Log your weight, set a goal, and watch your progress trend over time with a clean sparkline chart.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon" style="background:rgba(255,59,48,0.1)">🍽️</div>
+      <h3>Nutrition Logging</h3>
+      <p>Track calories, protein, carbs, and fat. Protein-first goals are baked in — because muscle preservation matters on GLP-1.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon" style="background:rgba(88,86,214,0.1)">🏃</div>
+      <h3>Exercise Tracking</h3>
+      <p>Import workouts directly from Apple Health or log manually. 19 workout types, calories, and distance all tracked.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon" style="background:rgba(50,173,230,0.1)">🎭</div>
+      <h3>Community Chat</h3>
+      <p>Anonymous peer matching — connect with someone at the same stage of their journey. No account needed.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon" style="background:rgba(0,122,255,0.1)">🔔</div>
+      <h3>Smart Notifications</h3>
+      <p>Shot reminders, overdue alerts, and food noise warnings delivered at exactly the right time.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon" style="background:rgba(52,199,89,0.1)">📱</div>
+      <h3>Widgets & Live Activity</h3>
+      <p>Your concentration on your home screen and lock screen, all week long. Small, medium, and large widgets included.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon" style="background:rgba(255,149,0,0.1)">🔍</div>
+      <h3>Siri & Spotlight</h3>
+      <p>Ask Siri to log a shot, check your concentration, or log a meal. All your data is searchable from Spotlight.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONCENTRATION EXPLAINER -->
+<section class="explainer">
+  <div class="explainer-inner">
+    <div class="explainer-text">
+      <div class="section-label" style="text-align:left">The science</div>
+      <h2>Predict the food noise before it hits.</h2>
+      <p>GLP-1 medications suppress appetite by maintaining a steady concentration in your bloodstream. As your dose wears off — typically day 5–7 — that suppression fades, and food noise returns.</p>
+      <p>Glide models this using first-order pharmacokinetics and alerts you before your concentration crosses the critical 40% threshold.</p>
+      <ul class="check-list">
+        <li>Semaglutide (Ozempic, Wegovy) — 5-day half-life modelled</li>
+        <li>Tirzepatide (Mounjaro, Zepbound) — 5-day half-life modelled</li>
+        <li>Crossover point calculated to the hour</li>
+        <li>Live Activity updates in real time on your lock screen</li>
+      </ul>
+    </div>
+    <div>
+      <div class="curve-card">
+        <div class="curve-card-title">Concentration curve</div>
+        <div class="curve-card-med">Ozempic 1.0 mg</div>
+        <div class="svg-wrap">
+          <svg class="curve" viewBox="0 0 300 140" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="grad-blue" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#007AFF"/>
+                <stop offset="100%" stop-color="#5856D6"/>
+              </linearGradient>
+              <linearGradient id="grad-orange" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#FF9500"/>
+                <stop offset="100%" stop-color="#FF3B30"/>
+              </linearGradient>
+              <linearGradient id="fill-blue" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#007AFF" stop-opacity="0.3"/>
+                <stop offset="100%" stop-color="#007AFF" stop-opacity="0"/>
+              </linearGradient>
+              <linearGradient id="fill-orange" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#FF9500" stop-opacity="0.2"/>
+                <stop offset="100%" stop-color="#FF9500" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <!-- Fill area blue -->
+            <path d="M10,10 C40,12 80,30 130,68 L130,130 L10,130 Z" fill="url(#fill-blue)"/>
+            <!-- Fill area orange -->
+            <path d="M130,68 C170,95 220,115 290,128 L290,130 L130,130 Z" fill="url(#fill-orange)"/>
+            <!-- 40% threshold line -->
+            <line x1="10" y1="88" x2="290" y2="88" stroke="rgba(255,255,255,0.15)" stroke-width="1" stroke-dasharray="4,3"/>
+            <text x="14" y="85" font-size="8" fill="rgba(255,255,255,0.35)" font-family="-apple-system,sans-serif">40%</text>
+            <!-- Blue curve (safe zone) -->
+            <path d="M10,10 C40,12 80,30 130,68" stroke="url(#grad-blue)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <!-- Orange curve (vulnerable zone) -->
+            <path d="M130,68 C170,95 220,115 290,128" stroke="url(#grad-orange)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <!-- Current position dot -->
+            <circle cx="90" cy="42" r="5" fill="#007AFF"/>
+            <circle cx="90" cy="42" r="9" fill="#007AFF" fill-opacity="0.2"/>
+            <!-- Day labels -->
+            <text x="8"   y="138" font-size="8" fill="rgba(255,255,255,0.3)" font-family="-apple-system,sans-serif">Day 1</text>
+            <text x="118" y="138" font-size="8" fill="rgba(255,255,255,0.3)" font-family="-apple-system,sans-serif">Day 4</text>
+            <text x="268" y="138" font-size="8" fill="rgba(255,255,255,0.3)" font-family="-apple-system,sans-serif">Day 7</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMMUNITY -->
+<section id="community">
+  <div class="community-inner">
+    <div>
+      <div class="anon-badge">🔒 Fully anonymous</div>
+      <div class="section-label" style="text-align:left">Community</div>
+      <h2 class="section-title" style="text-align:left; margin:0 0 16px">You're not doing this alone.</h2>
+      <p class="section-sub" style="text-align:left; margin:0 0 24px">Chat anonymously with a random GLP-1 user at the same stage. No names. No accounts. Just shared experience.</p>
+      <ul class="check-list">
+        <li>Matched randomly — no browsing profiles</li>
+        <li>Zero personal data required to connect</li>
+        <li>Chats are ephemeral — nothing stored after you disconnect</li>
+        <li>One-tap report keeps the community safe</li>
+      </ul>
+    </div>
+    <div class="chat-preview">
+      <div class="chat-header">
+        <div class="avatar">A</div>
+        <div class="chat-header-text">
+          <strong>Alex</strong>
+          <span>Week 6 · Ozempic</span>
+        </div>
+      </div>
+      <div class="bubble them">Hey! Week 6 here. The food noise on day 6 is still rough for me 😅</div>
+      <div class="bubble-time">10:42 AM</div>
+      <div class="bubble me">Same! I just started setting a reminder the day before. Helps me plan my meals ahead.</div>
+      <div class="bubble-time right">10:43 AM</div>
+      <div class="bubble them">That's smart. Does Glide alert you automatically?</div>
+      <div class="bubble-time">10:43 AM</div>
+      <div class="bubble me">Yeah, it calculates your exact crossover time 🙌</div>
+      <div class="bubble-time right">10:44 AM</div>
+    </div>
+  </div>
+</section>
+
+<!-- PRIVACY -->
+<section class="privacy-section" id="privacy">
+  <div class="section-label">Privacy first</div>
+  <h2 class="section-title">Your health data stays yours.</h2>
+  <p class="section-sub">We designed Glide from the ground up with privacy as the default — not an afterthought.</p>
+  <div class="privacy-grid">
+    <div class="privacy-card">
+      <div class="icon">📱</div>
+      <div>
+        <h3>Stored on-device</h3>
+        <p>All health data lives in SwiftData on your iPhone. It never touches our servers.</p>
+      </div>
+    </div>
+    <div class="privacy-card">
+      <div class="icon">🎭</div>
+      <div>
+        <h3>Anonymous community</h3>
+        <p>Firebase anonymous auth — no name, email, or Apple ID required to connect.</p>
+      </div>
+    </div>
+    <div class="privacy-card">
+      <div class="icon">🚫</div>
+      <div>
+        <h3>Zero data selling</h3>
+        <p>We don't sell, rent, or share your personal data. Ever.</p>
+      </div>
+    </div>
+    <div class="privacy-card">
+      <div class="icon">❤️</div>
+      <div>
+        <h3>HealthKit safe</h3>
+        <p>HealthKit data is never used for advertising and never shared with third parties.</p>
+      </div>
+    </div>
+  </div>
+  <p style="text-align:center; margin-top:32px">
+    <a href="privacy.html" style="color:var(--blue); font-weight:600; font-size:15px">Read the full privacy policy →</a>
+  </p>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="download">
+  <div class="section-label">Free to download</div>
+  <h2 class="section-title">Start your journey today.</h2>
+  <p class="section-sub">Core tracking features are free forever. Upgrade to Premium for concentration curves, food noise alerts, and community chat.</p>
+  <a href="#" class="btn-white">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+    Download on the App Store
+  </a>
+  <p style="margin-top:20px; font-size:14px; opacity:0.6">iPhone · iOS 17+ · Free</p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">💊 Glide</div>
+  <div class="footer-links">
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="mailto:privacy@glideapp.io">Contact</a>
+    <a href="https://github.com/sehenriksen-sudo/glide-glp1-companion" target="_blank">GitHub</a>
+  </div>
+  <p>© 2026 Glide GLP-1 Tracker</p>
+  <p class="disclaimer">Glide is an informational tool and is not a medical device. It is not intended to diagnose, treat, cure, or prevent any disease. Always follow your prescriber's guidance on dosing and schedule.</p>
+</footer>
+
 </body>
 </html>
